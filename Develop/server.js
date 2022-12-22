@@ -5,7 +5,7 @@ const fs = require('fs'); // Enables interacting with the file system
 
 // Creating server
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Custom middleware
 const logger = (req, res, next) => {console.log(`${req.method} request at ${req.path}`); next()};
@@ -21,7 +21,12 @@ app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 });
 
-// Get routes for homepage
+//Get route for db.json data
+app.get('/api/notes', (req, res) => {
+    res.sendFile(path.join(__dirname, '/db/db.json')) // Sends JSON data requested by index.html fetch request
+});
+
+// Get route for homepage (Wildcard)
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'))
 });

@@ -50,6 +50,7 @@ const deleteNote = (id) =>
     },
   });
 
+// Renders notes
 const renderActiveNote = () => {
   hide(saveNoteBtn);
 
