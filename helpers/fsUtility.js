@@ -13,7 +13,7 @@ const readFile = util.promisify(fs.readFile);
 
 // Creates new file
 const writeFile = (destination, content) => {
-    fs.writeFile(file, JSON.stringify(content, null, 4), err => {
+    fs.writeFile(destination, JSON.stringify(content, null, 4), err => {
         err ? console.log(err) : console.log(`File has been created at ${destination}`);
     });
 };
@@ -21,7 +21,7 @@ const writeFile = (destination, content) => {
 /** Function for reading and overwriting file
  * 
  * @param {string} file // File you want to overwrite
- * @param {object} content // Content you want to update
+ * @param {object} content // Content you want to add
  * 
  */
 
@@ -45,14 +45,21 @@ const addNewNote = (file, content) => {
 
 const deleteNote = (file, id) => {
     fs.readFile(file, 'utf-8', (err, data) => {
+
         if (err) {
-            console.log(err);
+            console.log(`There has been an error reading ${file}.`);
+
         } else {
-            const parsedData = JSON.parse(data);
-            const targetId = parsedData.findIndex(id);
-            parsedData.splice(targetId, 1);
+            const parsedData = JSON.parse(data); // Parses data string into objec
+
+            for (i=0; i<parsedData.length; i++) { // Iterates through objects to check if note id exists
+                if (parsedData[i].id == id) {
+                    parsedData.splice(i, 1) // Removes note with matching id
+                };
+            };
+
+            writeFile('./db/db.json', parsedData);
         };
-    writeNewFile(file, content)
     });
 };
 
