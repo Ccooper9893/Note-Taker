@@ -1,9 +1,9 @@
 // Importing required modules
 const express = require('express'); // Web application framework
-const path = require('path'); // Provides utilities for working with file and directory paths
+const path = require('path'); // Provides utilities for working with directory paths
 const fs = require('fs'); // Enables interacting with the file system
 const { v4: uuidv4 } = require('uuid'); // Provides unique ids
-
+const readFile = require('./helpers/fsUtility.js');
 
 // Creating server
 const app = express();
@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3001;
 const logger = (req, res, next) => {console.log(`${req.method} request at ${req.path}`); next()};
 
 // Mounting middleware
-app.use(logger); // Console logs requests and paths
+app.use(logger); // Console logs client requests
 app.use(express.json()); //Parses incoming JSON (Converts JSON in text format to Javascript object that can be used in JS)
 app.use(express.urlencoded({ extended: true })); // Parses incoming requests with urlencoded payloads
 app.use(express.static('public'));// // Allows HTTP to access files from public folder
@@ -23,12 +23,13 @@ app.get('/notes', (req, res, next) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 });
 
-// Get route for db.json data
+// Get route for saved notes
 app.get('/api/notes', (req, res, next) => {
-    res.sendFile(path.join(__dirname, '/db/db.json')) // Sends JSON data requested by index.html fetch request line 29
+    // res.sendFile(path.join(__dirname, '/db/db.json')) // Sends JSON data requested by index.html fetch request line 29
+    readFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
-// Post route for updating db.json data
+// Post route for updating saved notes
 app.post('/api/notes', (req, res, next) => { 
     // Reads the db.json file that contains notes
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
@@ -54,7 +55,7 @@ app.post('/api/notes', (req, res, next) => {
     });
 
     //Returns the newly updated db.json file containing notes
-    res.sendFile(path.join(__dirname, '/db/db.json'));
+    res.json(console.log('Notes updated!'));
 });
 
 app.delete('/api/notes/:id', (req, res, next) => {
@@ -62,14 +63,13 @@ app.delete('/api/notes/:id', (req, res, next) => {
         const noteId = req.params.id;
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
         if (err) {
-            console.error('There has been an ERROR!, err');
+            console.error('There has been an ERROR!', err);
         } else {
             let notesArray = JSON.parse(data) // Converts string to array of objects
             for (let i=0; i<notesArray.length; i++) {
                 if (notesArray[i].id == req.params.id) {
                     notesArray.splice(i, 1);
                 }
-                
             }
             // Creates new db.json file with clients note deleted
             fs.writeFile('./db/db.json', JSON.stringify(notesArray, null, 4), (err) => {
@@ -77,7 +77,8 @@ app.delete('/api/notes/:id', (req, res, next) => {
                     console.log(err)
                 }
             })
-            res.sendFile(path.join(__dirname, '/db/db.json'));
+            // res.sendFile(path.join(__dirname, '/db/db.json'));
+            res.json(console.log('Notes updated!'));
         }
     })
 }})
