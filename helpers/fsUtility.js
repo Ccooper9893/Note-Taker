@@ -31,8 +31,8 @@ const addNewNote = (file, content) => {
             console.log(err);
         } else {
             const parsedData = JSON.parse(data);
-            parsedData.push(content);
-            writeFile(file, parsedData);
+            parsedData.push(content); // Pushes new note onto array of notes
+            writeFile(file, parsedData); // Writes new file with updated json file
         };
     });
 };
@@ -50,7 +50,7 @@ const deleteNote = (file, id) => {
             console.log(`There has been an error reading ${file}.`);
 
         } else {
-            const parsedData = JSON.parse(data); // Parses data string into objec
+            const parsedData = JSON.parse(data); // Parses data string into object
 
             for (i=0; i<parsedData.length; i++) { // Iterates through objects to check if note id exists
                 if (parsedData[i].id == id) {
@@ -63,4 +63,4 @@ const deleteNote = (file, id) => {
     });
 };
 
-module.exports = { readFile, writeFile, addNewNote, deleteNote };
+module.exports = { readFile, addNewNote, deleteNote };
