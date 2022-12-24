@@ -2,6 +2,7 @@
 const express = require('express'); // Web application framework
 const path = require('path'); // Provides utilities for working with file and directory paths
 const fs = require('fs'); // Enables interacting with the file system
+const uuid = require('./helpers/uuid.js');
 
 // Creating server
 const app = express();
@@ -15,6 +16,9 @@ app.use(logger); // Console logs requests and paths
 app.use(express.json()); //Parses incoming JSON (Converts JSON in text format to Javascript object that can be used in JS)
 app.use(express.urlencoded({ extended: true })); // Parses incoming requests with urlencoded payloads
 app.use(express.static('public'));// // Allows HTTP to access files from public folder
+
+
+
 
 // Get route for notes page
 app.get('/notes', (req, res) => {
@@ -30,20 +34,22 @@ app.post('/api/notes', (req, res) => {
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
         //req.body -> object
         //data -> string
-        let currentObj = req.body;
         let parsedData = JSON.parse(data);
-        parsedData.push(req.body);
-        console.log(parsedData, typeof parsedData);
+        let newNote = {
+            title: req.body.title,
+            text: req.body.text,
+            id: uuid()
+        };
+
+        parsedData.push(newNote);
 
     fs.writeFile('./db/db.json', JSON.stringify(parsedData, null, 4), (err) => {
         if (err) {
             console.log(err)
         }
-    });
-        
-    });
-    //Read db.json file
-    //Write db.json file
+    });    
+    })
+    res.sendFile(path.join(__dirname, '/db/db.json'));
 });
 
 // Get route for homepage (Wildcard)
