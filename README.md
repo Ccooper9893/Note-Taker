@@ -33,3 +33,9 @@ POST /api/notes should receive a new note to save on the request body, add it to
 You haven’t learned how to handle DELETE requests, but this application has that functionality in the front end. As a bonus, see if you can add the DELETE route to the application using the following guideline:
 
 DELETE /api/notes/:id should receive a query parameter containing the id of a note to delete. In order to delete a note, you'll need to read all notes from the db.json file, remove the note with the given id property, and then rewrite the notes to the db.json file.
+
+Next goal:
+Create file that handles reading and writing json file to update note saves.
+    - Create Routers for utility files
+        - uuid file (for unique id)
+        - read, write, and append file

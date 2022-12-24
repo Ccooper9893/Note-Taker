@@ -53,7 +53,6 @@ const deleteNote = (id) =>
 // Renders notes
 const renderActiveNote = () => {
   hide(saveNoteBtn);
-
   if (activeNote.id) {
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
@@ -148,7 +147,6 @@ const renderNoteList = async (notes) => {
         'delete-note'
       );
       delBtnEl.addEventListener('click', handleNoteDelete);
-
       liEl.append(delBtnEl);
     }
 
@@ -182,3 +180,6 @@ if (window.location.pathname === '/notes') {
 }
 
 getAndRenderNotes();
+
+
+// Need to add eventlistener to display note contents

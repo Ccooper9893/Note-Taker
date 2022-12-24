@@ -21,9 +21,29 @@ app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 });
 
-//Get route for db.json data
+// Get route for db.json data
 app.get('/api/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, '/db/db.json')) // Sends JSON data requested by index.html fetch request
+    res.sendFile(path.join(__dirname, '/db/db.json')) // Sends JSON data requested by index.html fetch request line 29
+});
+
+app.post('/api/notes', (req, res) => {
+    fs.readFile('./db/db.json', 'utf-8', (err, data) => {
+        //req.body -> object
+        //data -> string
+        let currentObj = req.body;
+        let parsedData = JSON.parse(data);
+        parsedData.push(req.body);
+        console.log(parsedData, typeof parsedData);
+
+    fs.writeFile('./db/db.json', JSON.stringify(parsedData, null, 4), (err) => {
+        if (err) {
+            console.log(err)
+        }
+    });
+        
+    });
+    //Read db.json file
+    //Write db.json file
 });
 
 // Get route for homepage (Wildcard)
