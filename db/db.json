@@ -1,19 +1,12 @@
 [
     {
-        "title": "Test1",
-        "text": "Test text"
+        "title": "This is a new note",
+        "text": "note 1",
+        "id": "1e9a5625-de65-4674-bf8e-3630c5291bf8"
     },
     {
-        "title": "asdfasdf",
-        "text": "sadfasdfasdf"
-    },
-    {
-        "title": "Title1",
-        "text": "text1"
-    },
-    {
-        "title": "This note has an id",
-        "text": "random id",
-        "id": 80
+        "title": "adfadsf",
+        "text": "asdfasdfasdf",
+        "id": "e0f936eb-bf83-4727-8119-a39c2b862212"
     }
 ]

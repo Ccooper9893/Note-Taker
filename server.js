@@ -2,7 +2,8 @@
 const express = require('express'); // Web application framework
 const path = require('path'); // Provides utilities for working with file and directory paths
 const fs = require('fs'); // Enables interacting with the file system
-const uuid = require('./helpers/uuid.js');
+const { v4: uuidv4 } = require('uuid'); // Provides unique ids
+
 
 // Creating server
 const app = express();
@@ -30,25 +31,32 @@ app.get('/api/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/db/db.json')) // Sends JSON data requested by index.html fetch request line 29
 });
 
-app.post('/api/notes', (req, res) => {
+// Post route for updating db.json data
+app.post('/api/notes', (req, res) => { 
+    // Reads the db.json file that contains notes
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
-        //req.body -> object
-        //data -> string
-        let parsedData = JSON.parse(data);
+        let notesArray = JSON.parse(data); // Converts string into object
+
+        // Ensures the req is valid before updating note data
+        if (req.body) {
+        // Creates new note from client information
         let newNote = {
             title: req.body.title,
             text: req.body.text,
-            id: uuid()
+            id: uuidv4() //Calls for unique id
         };
 
-        parsedData.push(newNote);
-
-    fs.writeFile('./db/db.json', JSON.stringify(parsedData, null, 4), (err) => {
+        notesArray.push(newNote); // Updated notes array with new note
+    
+    // Creates new db.json file with clients note added
+    fs.writeFile('./db/db.json', JSON.stringify(notesArray, null, 4), (err) => {
         if (err) {
             console.log(err)
         }
-    });    
-    })
+    })};    
+    });
+
+    //Returns the newly updated db.json file containing notes
     res.sendFile(path.join(__dirname, '/db/db.json'));
 });
 
