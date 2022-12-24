@@ -18,21 +18,18 @@ app.use(express.json()); //Parses incoming JSON (Converts JSON in text format to
 app.use(express.urlencoded({ extended: true })); // Parses incoming requests with urlencoded payloads
 app.use(express.static('public'));// // Allows HTTP to access files from public folder
 
-
-
-
 // Get route for notes page
-app.get('/notes', (req, res) => {
+app.get('/notes', (req, res, next) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 });
 
 // Get route for db.json data
-app.get('/api/notes', (req, res) => {
+app.get('/api/notes', (req, res, next) => {
     res.sendFile(path.join(__dirname, '/db/db.json')) // Sends JSON data requested by index.html fetch request line 29
 });
 
 // Post route for updating db.json data
-app.post('/api/notes', (req, res) => { 
+app.post('/api/notes', (req, res, next) => { 
     // Reads the db.json file that contains notes
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
         let notesArray = JSON.parse(data); // Converts string into object
@@ -59,6 +56,31 @@ app.post('/api/notes', (req, res) => {
     //Returns the newly updated db.json file containing notes
     res.sendFile(path.join(__dirname, '/db/db.json'));
 });
+
+app.delete('/api/notes/:id', (req, res, next) => {
+    if (req.params.id) {
+        const noteId = req.params.id;
+    fs.readFile('./db/db.json', 'utf-8', (err, data) => {
+        if (err) {
+            console.error('There has been an ERROR!, err');
+        } else {
+            let notesArray = JSON.parse(data) // Converts string to array of objects
+            for (let i=0; i<notesArray.length; i++) {
+                if (notesArray[i].id == req.params.id) {
+                    notesArray.splice(i, 1);
+                }
+                
+            }
+            // Creates new db.json file with clients note deleted
+            fs.writeFile('./db/db.json', JSON.stringify(notesArray, null, 4), (err) => {
+                if (err) {
+                    console.log(err)
+                }
+            })
+            res.sendFile(path.join(__dirname, '/db/db.json'));
+        }
+    })
+}})
 
 // Get route for homepage (Wildcard)
 app.get('*', (req, res) => {
