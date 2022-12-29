@@ -7,7 +7,7 @@ const readFile = util.promisify(fs.readFile);
 /** Function for writing new file
  * 
  * @param {string} destination // File you want to write to
- * @param {object} content // Data you want the file to have
+ * @param {object} content // Data you want the new file to have
  * 
  */
 

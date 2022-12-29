@@ -34,11 +34,11 @@ Step for using this application:
 ___
 This application was created using the following software:
 - HTML5 - Hypertext markup language - Structures a webpage
-- CSS3 - Cascading style sheets - Styling/Presentation
-- Javascript ES6 - Dynamic - Interactive
-- Node - Non-browser Javascript runtime environment
-- Express - Back-end web application framework - Node module
-- uuidv4 - Unique ids - Node module
+- CSS3
+- Javascript ES6
+- Node
+- Express
+- uuidv4
 - VS Code
 
 ## *License*
