@@ -32,11 +32,11 @@ Step for using this application:
 ## *Software*
 ___
 This application was created using the following software:
-- HTML5 - Hypertext markup language - Structures a webpage
+- HTML5
 - CSS3
 - Javascript ES6
-- Node
-- Express
+- Node.js
+- Express.js
 - uuidv4
 - VS Code
 
