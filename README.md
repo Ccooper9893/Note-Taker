@@ -5,7 +5,6 @@
 ___
 A note-taking application built using Express.js to write, save, view, and delete notes. Building this application has strengthened my skills in Javascript, Node.js, Express.js, server side communication, file structures, and deployment. The most challenging aspect when creating this application was understanding the starter code and exactly what it required for the code to function correctly. 
 
-
 ## *Table of Contents*
  ___
   - [Installation](#installation)
